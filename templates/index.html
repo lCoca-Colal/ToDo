@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='simplebar.min.css') }}">
+    <script src="{{ url_for('static', filename='custom_scroll.js') }}"></script> <!-- Подключение вашего JavaScript-файла -->
+    <script src="{{ url_for('static', filename='simplebar.min.js') }}"></script>
+    <title>To-Do List</title>
+</head>
+<body>
+    <div id="sidebar">
+        <div class="profile">
+            <i class="fas fa-user-circle"></i>
+            <h1>Nickname</h1>
+        </div>
+        <a href="/" class="cssbuttons-io">
+            <span>Code</span>
+        </a>
+        <div class="menu">
+            <div class="menu-item">
+                <button>My Day</button>
+            </div>
+            <div class="menu-item">
+                <button>Next 7 Days</button>
+            </div>
+            <div class="menu-item">
+                <button>All My Tasks</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Todo List</h2>
+        <div class="todo">
+            <ul> 
+                {% for todo in todos %}
+                    <li class="task">
+                        <div class="task-container">
+                            <input type="checkbox" name="done" {% if todo['done'] %} checked {% endif %} onchange="this.form.submit()">
+                            <span {% if todo['done'] %} style="text-decoration: line-through" {% endif %}>{{ todo['task'] }}</span>
+                            <a href="{{ url_for('edit', index=loop.index0) }}" class="edit-icon">✎</a>
+                            <a href="{{ url_for('delete', index=loop.index0) }}" class="delete-icon">❌</a>
+                        </div>
+                    </li>  
+                {% endfor %} 
+            </ul>
+        </div>        
+        <form class="add-todo-form" action="{{url_for('add')}}" method="post">
+            <div class="add-task-wrapper">
+                <input type="text" name="todo" placeholder="Add a new task">
+                <button type="submit" class="add-task-button"><i class="fas fa-plus"></i></button>
+            </div>
+        </form>
+    </div>    
+</body>
+</html>
